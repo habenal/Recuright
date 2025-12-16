@@ -1,0 +1,256 @@
+### Variables
+@baseUrl = http://localhost:3000
+@token = YOUR_ACCESS_TOKEN_HERE
+@candidateId = YOUR_CANDIDATE_ID_HERE
+@jobId = YOUR_JOB_ID_HERE
+
+### ============================================
+### HEALTH & STATUS
+### ============================================
+
+### Health Check
+GET {{baseUrl}}/health
+
+### ============================================
+### AUTHENTICATION
+### ============================================
+
+### Register as Candidate
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "candidate@example.com",
+  "password": "password123",
+  "role": "CANDIDATE",
+  "profile": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "phone": "+251911234567"
+  }
+}
+
+### Register as Employer
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "employer@example.com",
+  "password": "password123",
+  "role": "EMPLOYER",
+  "profile": {
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "phone": "+251922345678"
+  }
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "candidate@example.com",
+  "password": "password123"
+}
+
+### Get Current User
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### Refresh Token
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "YOUR_REFRESH_TOKEN_HERE"
+}
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{token}}
+
+### ============================================
+### JOBS
+### ============================================
+
+### Get All Jobs
+GET {{baseUrl}}/jobs
+
+### Get Single Job
+GET {{baseUrl}}/jobs/{{jobId}}
+
+### Create Job (as EMPLOYER)
+POST {{baseUrl}}/jobs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Senior Software Engineer",
+  "description": "We are looking for an experienced software engineer to join our team. You will work on cutting-edge technologies and help build scalable applications.",
+  "location": "Addis Ababa, Ethiopia",
+  "type": "FULL_TIME",
+  "department": "Engineering",
+  "salary": "50,000 - 80,000 ETB/month",
+  "requirements": [
+    "5+ years of software development experience",
+    "Strong knowledge of Node.js and TypeScript",
+    "Experience with PostgreSQL",
+    "Excellent problem-solving skills"
+  ],
+  "benefits": [
+    "Health insurance",
+    "Remote work flexibility",
+    "Professional development budget",
+    "Annual bonus"
+  ]
+}
+
+### Update Job
+PATCH {{baseUrl}}/jobs/{{jobId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Senior Full-Stack Engineer",
+  "salary": "60,000 - 90,000 ETB/month"
+}
+
+### Delete Job
+DELETE {{baseUrl}}/jobs/{{jobId}}
+Authorization: Bearer {{token}}
+
+### ============================================
+### APPLICATIONS
+### ============================================
+
+### Apply for Job
+POST {{baseUrl}}/applications
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "jobId": "{{jobId}}",
+  "coverLetter": "I am very interested in this position. With over 5 years of experience in software development, I believe I would be a great fit for your team."
+}
+
+### Get My Applications (as CANDIDATE)
+GET {{baseUrl}}/applications/my
+Authorization: Bearer {{token}}
+
+### Get Job Applications (as EMPLOYER)
+GET {{baseUrl}}/applications/job/{{jobId}}
+Authorization: Bearer {{token}}
+
+### Update Application Status
+PATCH {{baseUrl}}/applications/APPLICATION_ID/status
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "status": "INTERVIEW"
+}
+
+### ============================================
+### ASSESSMENTS
+### ============================================
+
+### Create Assessment
+POST {{baseUrl}}/assessments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Technical Coding Assessment",
+  "description": "Complete the coding challenge within 2 hours",
+  "type": "TECHNICAL",
+  "scheduledAt": "2025-12-15T10:00:00Z"
+}
+
+### Get Candidate Assessments
+GET {{baseUrl}}/assessments/candidate/{{candidateId}}
+Authorization: Bearer {{token}}
+
+### Get All Assessments
+GET {{baseUrl}}/assessments
+Authorization: Bearer {{token}}
+
+### Update Assessment Score
+PATCH {{baseUrl}}/assessments/ASSESSMENT_ID/score
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "score": 85
+}
+
+### ============================================
+### PAYMENTS
+### ============================================
+
+### Create Stripe Payment
+POST {{baseUrl}}/payments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "amount": 500,
+  "currency": "ETB",
+  "type": "REGISTRATION",
+  "method": "STRIPE"
+}
+
+### Create Telebirr Payment
+POST {{baseUrl}}/payments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "amount": 1000,
+  "currency": "ETB",
+  "type": "CV_SERVICE",
+  "method": "TELEBIRR"
+}
+
+### Get My Payments
+GET {{baseUrl}}/payments/my
+Authorization: Bearer {{token}}
+
+### Confirm Payment (webhook simulation)
+POST {{baseUrl}}/payments/confirm
+Content-Type: application/json
+
+{
+  "transactionId": "TRANSACTION_ID_HERE",
+  "status": "COMPLETED"
+}
+
+### ============================================
+### USERS & PROFILE
+### ============================================
+
+### Get All Users (ADMIN only)
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
+
+### Get User by ID
+GET {{baseUrl}}/users/USER_ID
+Authorization: Bearer {{token}}
+
+### Update Profile
+PATCH {{baseUrl}}/users/profile
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "phone": "+251911234567",
+  "skills": ["JavaScript", "TypeScript", "Node.js", "React"],
+  "certifications": ["AWS Certified Developer", "Scrum Master"]
+}
+
+### Delete User
+DELETE {{baseUrl}}/users/USER_ID
+Authorization: Bearer {{token}}

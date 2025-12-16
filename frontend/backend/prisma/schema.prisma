@@ -1,0 +1,276 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  role          Role           @default(CANDIDATE)
+  isActive      Boolean        @default(true)
+  emailVerified Boolean        @default(false)
+  profile       Profile?
+  payments      Payment[]
+  jobs          Job[]
+  assessments   Assessment[]
+  applications  Application[]
+  cvServices    CVService[]
+  notifications Notification[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+enum Role {
+  CANDIDATE
+  EMPLOYER
+  RECRUITER
+  ADMIN
+}
+
+model Profile {
+  id             String       @id @default(uuid())
+  firstName      String
+  lastName       String
+  phone          String?
+  dateOfBirth    DateTime?
+  address        String?
+  city           String?
+  country        String?
+  bio            String?
+  skills         String[]
+  certifications String[]
+  cvUrl          String?
+  profilePhoto   String?
+  linkedIn       String?
+  completionPercentage Int    @default(0)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String       @unique
+  education      Education[]
+  experience     Experience[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Education {
+  id          String   @id @default(uuid())
+  institution String
+  degree      String
+  fieldOfStudy String?
+  startDate   DateTime
+  endDate     DateTime?
+  isCurrent   Boolean  @default(false)
+  description String?
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Experience {
+  id          String   @id @default(uuid())
+  company     String
+  position    String
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  isCurrent   Boolean  @default(false)
+  description String?
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Payment {
+  id            String      @id @default(uuid())
+  amount        Float
+  currency      String      @default("ETB")
+  type          PaymentType
+  method        PaymentMethod
+  status        PaymentStatus @default(PENDING)
+  transactionId String?     @unique
+  receiptUrl    String?
+  metadata      Json?
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+enum PaymentType {
+  REGISTRATION
+  CV_SERVICE
+  VACANCY_POSTING
+}
+
+enum PaymentMethod {
+  TELEBIRR
+  STRIPE
+  BANK_TRANSFER
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model Job {
+  id           String        @id @default(uuid())
+  title        String
+  description  String
+  location     String
+  type         JobType
+  department   String?
+  salary       String?
+  requirements String[]
+  benefits     String[]
+  isActive     Boolean       @default(true)
+  expiresAt    DateTime?
+  employer     User          @relation(fields: [employerId], references: [id], onDelete: Cascade)
+  employerId   String
+  applications Application[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([employerId])
+  @@index([isActive])
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  TEMPORARY
+}
+
+model Assessment {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  type        AssessmentType
+  status      AssessmentStatus @default(PENDING)
+  score       Float?
+  maxScore    Float?
+  feedback    String?
+  scheduledAt DateTime?
+  completedAt DateTime?
+  candidate   User             @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([candidateId])
+  @@index([status])
+}
+
+enum AssessmentType {
+  TECHNICAL
+  BEHAVIORAL
+  APTITUDE
+  LANGUAGE
+  CUSTOM
+}
+
+enum AssessmentStatus {
+  PENDING
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model Application {
+  id          String            @id @default(uuid())
+  candidate   User              @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId String
+  job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId       String
+  coverLetter String?
+  status      ApplicationStatus @default(APPLIED)
+  notes       String?
+  score       Float?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@unique([candidateId, jobId])
+  @@index([candidateId])
+  @@index([jobId])
+  @@index([status])
+}
+
+enum ApplicationStatus {
+  APPLIED
+  UNDER_REVIEW
+  SHORTLISTED
+  INTERVIEW
+  OFFER
+  REJECTED
+  WITHDRAWN
+}
+
+model CVService {
+  id          String          @id @default(uuid())
+  type        CVServiceType
+  status      CVServiceStatus @default(REQUESTED)
+  notes       String?
+  deliveredAt DateTime?
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+enum CVServiceType {
+  BASIC_REVIEW
+  PROFESSIONAL_REWRITE
+  EXECUTIVE_PACKAGE
+}
+
+enum CVServiceStatus {
+  REQUESTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model Notification {
+  id        String             @id @default(uuid())
+  type      NotificationType
+  channel   NotificationChannel
+  title     String
+  message   String
+  isRead    Boolean            @default(false)
+  sentAt    DateTime?
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime           @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+enum NotificationType {
+  APPLICATION_UPDATE
+  ASSESSMENT_SCHEDULED
+  PAYMENT_CONFIRMATION
+  JOB_ALERT
+  SYSTEM_ANNOUNCEMENT
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  IN_APP
+}
+

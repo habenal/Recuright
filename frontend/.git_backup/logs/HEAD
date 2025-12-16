@@ -1,0 +1,12 @@
+0000000000000000000000000000000000000000 2157517e2149691a4a8977b7eec7a59eb4b73769 habenal <habenalem09@gmail.com> 1765572721 +0300	commit (initial): Initial commit from Create Next App
+2157517e2149691a4a8977b7eec7a59eb4b73769 0000000000000000000000000000000000000000 habenal <habenalem09@gmail.com> 1765866755 +0300	Branch: renamed refs/heads/master to refs/heads/main
+0000000000000000000000000000000000000000 2157517e2149691a4a8977b7eec7a59eb4b73769 habenal <habenalem09@gmail.com> 1765866755 +0300	Branch: renamed refs/heads/master to refs/heads/main
+2157517e2149691a4a8977b7eec7a59eb4b73769 0000000000000000000000000000000000000000 habenal <habenalem09@gmail.com> 1765866863 +0300	Branch: renamed refs/heads/main to refs/heads/main
+2157517e2149691a4a8977b7eec7a59eb4b73769 2157517e2149691a4a8977b7eec7a59eb4b73769 habenal <habenalem09@gmail.com> 1765866863 +0300	Branch: renamed refs/heads/main to refs/heads/main
+2157517e2149691a4a8977b7eec7a59eb4b73769 0000000000000000000000000000000000000000 habenal <habenalem09@gmail.com> 1765867214 +0300	Branch: renamed refs/heads/main to refs/heads/local-backup
+0000000000000000000000000000000000000000 2157517e2149691a4a8977b7eec7a59eb4b73769 habenal <habenalem09@gmail.com> 1765867214 +0300	Branch: renamed refs/heads/main to refs/heads/local-backup
+2157517e2149691a4a8977b7eec7a59eb4b73769 2157517e2149691a4a8977b7eec7a59eb4b73769 habenal <habenalem09@gmail.com> 1765867214 +0300	checkout: moving from local-backup to main
+2157517e2149691a4a8977b7eec7a59eb4b73769 2157517e2149691a4a8977b7eec7a59eb4b73769 habenal <habenalem09@gmail.com> 1765867214 +0300	checkout: moving from main to main
+2157517e2149691a4a8977b7eec7a59eb4b73769 0f8fb5bef0a8f09dc46001eef8ac993b914fe054 habenal <habenalem09@gmail.com> 1765867233 +0300	commit: WIP: local changes before merging origin/main
+0f8fb5bef0a8f09dc46001eef8ac993b914fe054 4d1e4ff56c3ce134feb2d36cb1668702eacb9254 habenal <habenalem09@gmail.com> 1765867310 +0300	commit (merge): Resolve merge conflicts: package.json and .gitignore
+4d1e4ff56c3ce134feb2d36cb1668702eacb9254 d7c444d9afdd268cafbfad1afec363245fc44fd9 habenal <habenalem09@gmail.com> 1765867465 +0300	commit: Convert frontend submodule to regular folder

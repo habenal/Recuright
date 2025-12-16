@@ -1,0 +1,60 @@
+/* Design tokens for RecuRight - color, spacing, radii, motion */
+:root {
+  /* Primary / Accent */
+  --color-primary-700: 11 59 140; /* #0B3B8C */
+  --color-primary-600: 14 79 176; /* #0E4FB0 */
+  --color-primary-500: 43 108 176; /* #2B6CB0 */
+
+  --color-violet-500: 124 58 237; /* #7C3AED */
+  --color-violet-300: 196 181 253; /* #C4B5FD */
+
+  --color-success-600: 5 150 105; /* #059669 */
+  --color-info-500: 14 165 233; /* #0EA5E9 */
+  --color-warning-500: 245 158 11; /* #F59E0B */
+  --color-danger-500: 239 68 68; /* #EF4444 */
+
+  /* Neutrals */
+  --text-900: 15 23 42; /* #0F172A */
+  --slate-800: 31 41 55; /* #1F2937 */
+  --slate-600: 51 65 85; /* #334155 */
+  --slate-400: 148 163 184; /* #94A3B8 */
+  --slate-200: 203 213 225; /* #CBD5E1 */
+  --surface-0: 255 255 255; /* white */
+  --surface-1: 247 250 252; /* subtle */
+
+  /* Dark Mode */
+  --dark-surface-900: 3 5 23; /* very dark navy */
+  --dark-surface-800: 11 18 28;
+  --dark-text: 230 238 248; /* soft white for dark mode */
+
+  /* Shadows & elevation */
+  --shadow-1: 0 10px 24px rgba(8,24,48,0.06);
+  --shadow-2: 0 18px 36px rgba(8,24,48,0.08);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  /* Spacing scale (8px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+
+  /* Motion */
+  --transition-fast: 150ms;
+  --transition-medium: 260ms;
+  --transition-slow: 420ms;
+  --motion-ease: cubic-bezier(.2,.9,.2,1);
+}
+
+/* Dark theme override */
+[data-theme="dark"], .dark {
+  --text-900: var(--dark-text);
+  --surface-0: var(--dark-surface-900);
+  --surface-1: var(--dark-surface-800);
+  --slate-200: rgba(255,255,255,0.06);
+}
